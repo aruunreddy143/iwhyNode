@@ -24,5 +24,8 @@
   "devDependencies": {
     "excel-to-json": "^1.0.0",
     "mongoose": "^5.0.4"
+  },
+  "engines": {
+    "node": "*"
   }
 }
