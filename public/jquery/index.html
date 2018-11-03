@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>Flipster Demo</title>
+    <meta name="description" content="">
+    <meta name="viewport" content="width=550, initial-scale=1">
+    
+    <link rel="stylesheet" href="./index_files/demo.css">
+    <link rel="stylesheet" href="./index_files/jquery.flipster.css">
+    
+   
+</head>
+<body>
+
+<header id="Main-Header">
+	<h1><img src="http://localhost:3000/assets/images/vzlogo.png" /> </h1>
+</header>
+<div id="Main-Content">
+	<div class="Container">
+<!-- Flipster List -->	
+		<div class="flipster">
+		  <ul class="flip-items">
+		  	<li class="flip-item flip-future"><div class="flip-content">
+		  		<a href="http://a.drien.com/jquery-flipster/demo.html" class="Button Block">
+		  			<h1>1F &amp; Engineering Design </h1>
+		  			<p>Showcase of design features in 3 GIS application for creating and placements</p>
+		  		</a>
+		  	</div></li>
+	  		<li class="flip-item flip-past"><div class="flip-content">
+	  			<a href="http://a.drien.com/jquery-flipster/demo2.html" class="Button Block">
+		  			<h1>VZT Analytics</h1>
+		  			<p>The bare minimum code needed to implement Flipster</p>
+	  			</a>
+	  		</div></li>
+	  		<li class="flip-item flip-prev"><div class="flip-content">
+	  			<a href="http://a.drien.com/jquery-flipster/demo3.html" class="Button Block">
+		  			<h1>Fiber Assignment</h1>
+		  			<p>Roundabout carousel style!</p>
+		  		</a>
+	  		</div></li>
+	  		
+		  </ul>
+		</div>
+<!-- End Flipster List -->
+
+	</div>
+</div>
+
+<script src="./index_files/jquery.min.js"></script>
+<script src="./index_files/jquery.flipster.js"></script>
+<script>
+
+
+	$(function(){ $(".flipster").flipster({ style: 'carousel', start: 0 }); });
+
+
+</script>
+
+
+</body></html>

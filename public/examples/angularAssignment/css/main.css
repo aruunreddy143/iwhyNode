@@ -1,0 +1,118 @@
+*{
+    margin: 0;
+    padding: 0
+}
+a{
+    text-decoration: none;
+}
+html, body {
+    height: 100%;
+    background-color: #333;
+    font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
+    font-size: 62.5%;
+}
+body {
+    color: #fff;
+}
+header {
+    text-align: center;    
+    padding: 20px;
+}
+h1 {
+    font-size:36px;
+    text-align: center;
+}
+.nav {
+    margin-top:20px;
+    list-style: none;
+    
+}
+.nav > li {
+    position: relative;
+    display: block;
+    display: inline-block;
+}
+.nav > li > a {
+    padding-right: 0;
+    padding-left: 0;
+    font-size: 14px;
+    font-weight: bold;
+    color: #fff;
+    color: rgba(255,255,255,.75);
+    border-bottom: 2px solid transparent;
+}
+.nav > .active > a, .nav > .active > a:hover, .nav > .active > a:focus {
+    color: #fff;
+    border-bottom-color: #fff;
+}
+.nav > li + li {
+    margin-left: 20px;
+}
+
+section {
+    min-height: 400px;
+}
+.innerContent {
+    padding:40px 20px;
+    font-size:20px;
+    max-width: 600px;
+    margin: 0 auto;
+}
+
+pre {
+    display: block;
+    padding: 10px;
+    margin: 0 0 10px;
+    font-size: 13px;
+    line-height: 1.42857143;
+    color: #333;
+    word-break: break-all;
+    word-wrap: break-word;
+    background-color: #f5f5f5;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    white-space: nowrap;
+    word-break: normal;
+}
+
+pre code:first-child {
+    display: inline-block;
+    padding-right: 45px;
+    white-space: pre-wrap;
+}
+footer p {
+    font-size:16px;
+    text-align: center
+}
+.table {
+    width: 100%;
+    max-width: 100%;
+    border-collapse: collapse;
+    margin-top:20px;
+    height: 300px;
+    border:1px solid #CCC;
+}
+.table td, .table th {
+    padding: 10px;
+    vertical-align: top;
+    border-top: 1px solid #dee2e6;
+    color:#FFF
+}
+.table thead th {
+    vertical-align: bottom;
+    border-bottom: 2px solid #ccc;
+}
+@media (min-width: 768px) {
+    header {   
+        padding: 40px;
+    }
+    h1 {
+        float: left;
+    }
+    .nav {
+        float: right;
+    }
+    .nav > li > a {
+        font-size:16px;
+    }
+}

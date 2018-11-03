@@ -1,8 +1,9 @@
-let express = require('express');
-let router = express.Router();
-let fs = require("fs");
+const express = require('express');
+const router = express.Router();
+const fs = require("fs");
+const winston = require('winston')
 
-var GiveAssistance = require('../models/giveAssistanceModel');
+let GiveAssistance = require('../models/giveAssistanceModel');
 
 let xlsx = require('excel');
 
@@ -58,19 +59,16 @@ function getKeys(obj, val) {
 
 router.post('/list', (req, res, next) => {
 
-    
+
     console.log(req.body);
-    
+
     const getInfo = async () => {
-        const data = await fs.readFileSync('./public/data/test.json'); 
+        const data = await fs.readFileSync('./public/data/test.json');
         const obj = getObjects(JSON.parse(data), 'city', req.body.city)
         res.json(obj);
-        //res.setHeader('Content-Type', 'application/json');
-       // res.send(JSON.stringify({ a: 1 }));
-        //res.send({ name: 'hyderabad' });
     }
     getInfo();
-    
+
 });
 
 router.post('/saveAssistance', (req, res, next) => {
@@ -85,9 +83,9 @@ router.post('/saveAssistance', (req, res, next) => {
 
         res.send({ 'success': 'data saved successfully' });
     });
-    
 
-    
+
+
 
 });
 
@@ -114,15 +112,15 @@ function convertToJSON(array) {
 /* GET users listing. */
 router.get('/', function (req, res, next) {
     //res.send('airport request');
-   
 
-    
+
+
 
     xlsx('./public/data/test.xlsx', function (err, data) {
         if (err) throw err;
 
         let convertedData = JSON.stringify(convertToJSON(data))
-       // res.send(JSON.stringify(convertToJSON(data)));
+        // res.send(JSON.stringify(convertToJSON(data)));
         //console.log(jsonDataArray(data));
         //console.log(JSON.stringify(convertToJSON(data)));
         fs.writeFile('./public/data/test.json', convertedData, function (err) {
@@ -133,23 +131,14 @@ router.get('/', function (req, res, next) {
     });
 });
 
-/* GET users listing. */
-router.get('/sameDayTravelling', function (req, res, next) {
 
-    GiveAssistance.find({}, function (err, users) {
-        if (err) throw err;
+const asyncMiddleware = require('../utils/asyncMiddleware'); 
+const associateUsers = async () => {
+    router.get('/sameDayTravelling', asyncMiddleware(async (req, res, next) => {
+        res.json(await GiveAssistance.find({}));
+    }));
+}
 
-        // object of all the users
-        res.json(users);
-        console.log(users);
-    });
-    
-    
-
-
-
-
-    
-});
+associateUsers();
 
 module.exports = router;

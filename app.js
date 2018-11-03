@@ -1,30 +1,27 @@
-var express = require('express');
-var path = require('path');
-var favicon = require('serve-favicon');
-var logger = require('morgan');
-var cookieParser = require('cookie-parser');
-var bodyParser = require('body-parser');
-var mongoose = require('mongoose');
+const express = require('express');
+const path = require('path');
+const favicon = require('serve-favicon');
+const logger = require('morgan');
+const cookieParser = require('cookie-parser');
+const bodyParser = require('body-parser');
+const mongoose = require('mongoose');
+const compression = require('compression');
+const winston = require('winston');
+const config = require('./config/settings');
+const jwt = require('jsonwebtoken');
+const helmet = require('helmet');
+const RateLimit = require('express-rate-limit');
+const morgan = require('morgan');
+const cors = require('cors');
 
-const options = {
-    autoIndex: false, // Don't build indexes
-    reconnectTries: Number.MAX_VALUE, // Never stop trying to reconnect
-    reconnectInterval: 500, // Reconnect every 500ms
-    poolSize: 10, // Maintain up to 10 socket connections
-    // If not connected, return errors immediately rather than waiting for reconnect
-    bufferMaxEntries: 0
-};
- 
-mongoose.connect('mongodb://arun.reddy143:arun1234@ds231568.mlab.com:31568/assistance', options).then(
-    () => { console.log('opened') },
-    err => { console.log('error' )}
+const asyncMiddleware = require('./utils/asyncMiddleware');
+
+
+mongoose.connect(config.database, config.options).then(
+  () => { console.log('opened') },
+  err => { console.log('error') }
 );
-
-var index = require('./routes/index');
-var users = require('./routes/users');
-var airports = require('./routes/airports');
-
-var app = express();
+const app = express();
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
@@ -33,46 +30,70 @@ app.set('view engine', 'ejs');
 // uncomment after placing your favicon in /public
 //app.use(favicon(path.join(__dirname, 'public', 'favicon.ico')));
 app.use(logger('dev'));
-app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({ extended: false }));
+let corsOptions = {
+  origin: '*',
+  optionsSuccessStatus: 200 // some legacy browsers (IE11, various SmartTVs) choke on 204 
+}
+app.use(cors(corsOptions));
+
 app.use(cookieParser());
+app.use(compression())
 app.use(express.static(path.join(__dirname, 'public')));
+app.use(helmet());
+app.use(bodyParser.json());
+//app.use(bodyParser({ limit: '50MB' }));
+app.use(bodyParser.urlencoded({ extended: true }));
+//app.use(bodyParser());
+//app.use(bodyParser.json({ limit: '50mb' }));
 
+app.use((req, res, next) => {
 
-app.use(function (req, res, next) {
+  // Website you wish to allow to connect
+  res.setHeader('Access-Control-Allow-Origin', 'http://localhost:4200');
 
-    // Website you wish to allow to connect
-    res.setHeader('Access-Control-Allow-Origin', 'http://localhost:4200');
+  // Request methods you wish to allow
+  res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS, PUT, PATCH, DELETE');
 
-    // Request methods you wish to allow
-    res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS, PUT, PATCH, DELETE');
+  // Request headers you wish to allow
+  res.setHeader('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept, Authorization, x-access-token');
 
-    // Request headers you wish to allow
-    res.setHeader('Access-Control-Allow-Headers', 'X-Requested-With,content-type');
+  // Set to true if you need the website to include cookies in the requests sent
+  // to the API (e.g. in case you use sessions)
+  res.setHeader('Access-Control-Allow-Credentials', true);
 
-    // Set to true if you need the website to include cookies in the requests sent
-    // to the API (e.g. in case you use sessions)
-    res.setHeader('Access-Control-Allow-Credentials', true);
-
-    // Pass to next layer of middleware
-    next();
+  // Pass to next layer of middleware
+  next();
 });
+//app.use(morgan('combined', { stream: winston.stream }));
+
+const index = require('./routes/index');
+//const airports = require('./routes/airports');
+const users = require('./routes/users');
+//const profile = require('./routes/profile');
+const profile = require('./routes/profile/profile');
+const search = require('./routes/search');
+const admin = require('./routes/admin/admin');
+
 app.use('/', index);
-app.use('/users', users);
-app.use('/airports', airports);
+app.use('/api', users);
+//app.use('/profile', profile);
+app.use('/profile', profile)
+app.use('/search', search);
+app.use('/admin', admin)
+
 // Add headers
 
 
-
 // catch 404 and forward to error handler
-app.use(function(req, res, next) {
-  //var err = new Error('Not Found');
-  //err.status = 404;
-  //next(err);
+app.use((req, res, next) => {
+  /*let err = new Error('Not Found');
+  err.status = 404;
+  next(err);*/
+
 });
 
 // error handler
-app.use(function(err, req, res, next) {
+app.use((err, req, res, next) => {
   // set locals, only providing error in development
   res.locals.message = err.message;
   res.locals.error = req.app.get('env') === 'development' ? err : {};
@@ -81,6 +102,22 @@ app.use(function(err, req, res, next) {
   res.status(err.status || 500);
   res.render('error');
 });
-const PORT = process.env.PORT || 5000
-app.listen(PORT, () => console.log(`Listening on ${PORT}`))
-//module.exports = app;
+
+//app.enable('trust proxy'); // only if you're behind a reverse proxy (Heroku, Bluemix, AWS if you use an ELB, custom Nginx setup, etc)
+
+var limiter = new RateLimit({
+  windowMs: 15 * 60 * 1000, // 15 minutes
+  max: 100, // limit each IP to 100 requests per windowMs
+  delayMs: 0 // disable delaying - full speed until the max limit is reached
+});
+
+//  apply to all requests
+app.use(limiter);
+/*process.on('uncaughtException', function (err) {
+  console.log("=================")
+  console.log(err);
+
+  winston.error(err);
+  // process.exit(1);
+})*/
+module.exports = app;

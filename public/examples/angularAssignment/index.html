@@ -1,0 +1,49 @@
+<!DOCTYPE HTML>
+<html>
+
+<head>
+  <meta http-equiv="Content-Type" content="text/html" charset="UTF-8" />
+  <title>Angular Assignment</title>
+  <meta name="description" content="Assignment" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link href="css/main.css" type="text/css" rel="stylesheet" />
+</head>
+
+<body ng-app="myApp">
+
+  <div class="container">
+    <header>
+      <h1>My Logo</h1>
+      <nav>
+        <ul class="nav">
+
+          <li ng-class="{active: $route.current.activetab == 'main'}">
+            <a href="#">Assignment</a>
+          </li>
+          <li ng-class="{active: $route.current.activetab == 'codeExplanation'}">
+            <a href="#!codeExplanation">Explanination</a>
+          </li>
+          <li ng-class="{active: $route.current.activetab == 'contact'}">
+            <a href="#!contact">Contact</a>
+          </li>
+        </ul>
+      </nav>
+
+    </header>
+    <section>
+      <div ng-view></div>
+
+    </section>
+
+    <footer>
+      <p>&copy; 2018 Angular Assignment</p>
+    </footer>
+  </div>
+
+
+  <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.9/angular.min.js"></script>
+  <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.9/angular-route.js"></script>
+  <script src="js/main.js"></script>
+</body>
+
+</html>

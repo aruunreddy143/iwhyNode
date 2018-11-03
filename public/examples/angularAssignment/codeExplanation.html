@@ -1,0 +1,35 @@
+<div class="innerContent" ng-controller="codeExplanationController">
+  <h2 class="cover-heading">Folder Structure</h2>
+  <pre>
+
+    <code>Angular Assignment
+      a) CSS 
+      b) JS
+      c) Index.html, Contact.html, main.html, codeExplanation.html
+    </code>
+    </pre>
+
+  <h2 class="cover-heading">Active link router</h2>
+  <pre>
+    <code>
+Click of these link, respective file will be loaded. The route link will be activated
+    </code>
+  </pre>
+
+  <h2 class="cover-heading">HTTP GET example</h2>
+  <pre>
+    <code>
+$http.get('//jsonplaceholder.typicode.com/posts').then((data) => {
+    $scope.items = data.data;
+});
+USed http service to fetch online data, on success load the data to $scope data. Items data is data binded to table.
+
+&lt;tr ng-repeat="item in items">
+&lt;td> item.id  &lt;/td>
+&lt;td item.userId  &lt;/td>
+&lt;td> item.title &lt;/td>
+&lt;/tr>
+Items will hold http response data, which will be repeat and will display the data in table.
+    </code>
+  </pre>
+</div>

@@ -1,0 +1,22 @@
+<div class="innerContent" ng-controller="mainController">
+  <h2 class="cover-heading">Code http Example</h1>
+
+    <table class="table table-striped">
+      <thead>
+        <tr>
+          <th scope="col">Id</th>
+          <th scope="col">user Id</th>
+          <th scope="col">title</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr ng-repeat="item in items">
+          <td>{{item.id}}</td>
+          <td>{{item.userId}}</td>
+          <td>{{item.title}}</td>
+        </tr>
+
+      </tbody>
+    </table>
+
+</div>
