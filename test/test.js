@@ -7,10 +7,13 @@ describe('array', function () {
       assert.equal(-1, [1, 2, 3].indexOf(4));
     });
   });
-}); 
-describe('array', function () {
-  
 });
+describe('array', function () {
+
+});
+describe('', () => {
+
+})
 
 describe('routes', function () {
   var server;
