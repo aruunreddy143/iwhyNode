@@ -12,7 +12,7 @@ const jwt = require('jsonwebtoken');
 const helmet = require('helmet');
 const RateLimit = require('express-rate-limit');
 const morgan = require('morgan');
-const cors = require('cors');
+const cors = require('cors'); 
 
 const asyncMiddleware = require('./utils/asyncMiddleware');
 
