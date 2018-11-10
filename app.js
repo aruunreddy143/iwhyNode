@@ -5,14 +5,13 @@ const logger = require('morgan');
 const cookieParser = require('cookie-parser');
 const bodyParser = require('body-parser');
 const mongoose = require('mongoose');
-const compression = require('compression');
 const winston = require('winston');
 const config = require('./config/settings');
 const jwt = require('jsonwebtoken');
 const helmet = require('helmet');
 const RateLimit = require('express-rate-limit');
 const morgan = require('morgan');
-const cors = require('cors'); 
+const cors = require('cors');
 
 const asyncMiddleware = require('./utils/asyncMiddleware');
 
@@ -37,7 +36,6 @@ let corsOptions = {
 app.use(cors(corsOptions));
 
 app.use(cookieParser());
-app.use(compression())
 app.use(express.static(path.join(__dirname, 'public')));
 app.use(helmet());
 app.use(bodyParser.json());
