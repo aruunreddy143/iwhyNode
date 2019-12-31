@@ -9,7 +9,7 @@ router.post("/", (req, res, next) => {
   contact.save(function(err) {
     if (err) {
       res
-        .status(500)
+        .status(200)
         .send({ success: false, error: err, message: "problem encounterd" });
       return;
     }
